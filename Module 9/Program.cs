@@ -14,7 +14,7 @@
             new InvalidOperationException(),
             new MyException("My custom exception"),
             new ArgumentException()};
-
+             
                 try
                 {
                     for (int i = 0; i < exceptions.Length; i++)
