@@ -1,37 +1,55 @@
 ﻿namespace DelegatePractices
 {
-    class MyException : Exception
-        {
-            public MyException(string message) : base(message) { }
-        }
+    using System;
 
-        class Program
+    class Program
+    {
+        static string[] names = new string[] { "Ivanov", "Petrov", "Williams", "Johnson", "Brown" };
+
+        static void Main(string[] args)
         {
-            static void Main()
-        { Exception[] exceptions = {
-            new DivideByZeroException(),
-            new IndexOutOfRangeException(),
-            new InvalidOperationException(),
-            new MyException("My custom exception"),
-            new ArgumentException()};
-             
-                try
+            Console.WriteLine("Enter 1 to sort names A-Z or 2 to sort names Z-A:");
+            try
+            {
+                int sortOrder = int.Parse(Console.ReadLine());
+                if (sortOrder != 1 && sortOrder != 2)
                 {
-                    for (int i = 0; i < exceptions.Length; i++)
-                    {
-                        throw exceptions[i];
-                    }
+                    throw new InvalidInputException("Invalid input. Please enter 1 or 2.");
                 }
-                catch (Exception e)
+                if (sortOrder == 1)
                 {
-                    Console.WriteLine(e.Message);
+                    Array.Sort(names);
                 }
-                finally
+                else
                 {
-                    Console.WriteLine("Finally block executed.");
+                    Array.Sort(names, (a, b) => b.CompareTo(a));
+                }
+                Console.WriteLine("Sorted names:");
+                for (int i = 0; i < names.Length; i++)
+                {
+                    Console.WriteLine(names[i]);
                 }
             }
+            catch (InvalidInputException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            catch (FormatException)
+            {
+                Console.WriteLine("Invalid input. Please enter a number.");
+            }
+            finally
+            {
+                Console.WriteLine("Program execution complete.");
+            }
         }
-
-    
+        public class InvalidInputException : Exception
+        {
+            public InvalidInputException()
+            { }
+            public InvalidInputException(string message)
+                : base(message)
+            { }
+        }
+    }
 }
